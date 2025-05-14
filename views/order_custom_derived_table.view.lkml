@@ -210,6 +210,14 @@ view: order_custom_derived_table{
     sql: ${profit}/${total_sales} ;;
     value_format: "0%"
   }
+  measure: rank_lod {
+    type: number
+    sql: RANK() OVER (
+          PARTITION BY ${region}
+          ORDER BY SUM(${TABLE}.sales) DESC
+        ) ;;
+    value_format_name: decimal_0
+  }
 
   set: detail {
     fields: [
