@@ -131,9 +131,9 @@ view: orders_data {
     drill_fields: [customer_name, product_name]
   }
   measure: sales {
-    type: sum
+    type: number
     value_format: "0,\" K\""
-    sql: ${TABLE}.Sales ;;
+    sql: sum(${TABLE}.Sales) ;;
   }
   measure: profit {
     type: sum
@@ -231,4 +231,16 @@ view: orders_data {
     value_format_name: "decimal_2"
     label: "Sales Percentage of Total"
   }
+
+  measure: running_total_sales {
+    type: number
+    sql: SUM(${sales}) OVER (ORDER BY ${sales} DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) ;;
+  }
+
+  measure: cumulative_percentage {
+    type: number
+    sql: ${running_total_sales} / NULLIF(SUM(${sales}) OVER (), 0) ;;
+    value_format_name: percent_2
+  }
+
 }
