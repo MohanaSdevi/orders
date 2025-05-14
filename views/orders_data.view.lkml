@@ -232,6 +232,21 @@ view: orders_data {
     label: "Sales Percentage of Total"
   }
 
+  measure: percent_of_sales {
+    label: "% of Total Sales"
+    type: number
+    sql:
+    SUM(${TABLE}.sales) / NULLIF(SUM(SUM(${TABLE}.sales)) OVER (), 0) ;;
+    value_format: "0.00%"
+  }
+
+  measure: baseline {
+    label: "Baseline"
+    type: number
+    sql: 1.000 ;;
+    value_format: "0.00%"
+  }
+
   measure: running_total_sales {
     type: number
     sql: SUM(${sales}) OVER (ORDER BY ${sales} DESC ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) ;;
