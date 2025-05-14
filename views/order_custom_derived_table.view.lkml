@@ -121,8 +121,8 @@ view: order_custom_derived_table{
     sql: ${TABLE}.Product_Name ;;
   }
 
-  dimension: sales {
-    type: number
+  measure: sales {
+    type: sum
     sql: ${TABLE}.Sales ;;
   }
 
@@ -210,6 +210,7 @@ view: order_custom_derived_table{
     sql: ${profit}/${total_sales} ;;
     value_format: "0%"
   }
+
   set: detail {
     fields: [
       order_id,
